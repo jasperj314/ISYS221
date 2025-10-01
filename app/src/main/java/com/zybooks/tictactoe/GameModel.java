@@ -1,4 +1,4 @@
-package com.zybooks.tictactoe;
+package com.zybooks.peerproject2;
 
 public class GameModel {
     private char[] board;
@@ -11,6 +11,10 @@ public class GameModel {
 
     public char getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void setCurrentPlayer(char player) {
+        currentPlayer = player;
     }
 
     public boolean makeMove(int index) {
@@ -53,4 +57,3 @@ public class GameModel {
         currentPlayer = 'X';
     }
 }
-
