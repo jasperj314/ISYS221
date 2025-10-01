@@ -54,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
             buttons[index].setText(String.valueOf(game.getCurrentPlayer()));
 
             if (game.checkWin()) {
-                Toast.makeText(this, game.getCurrentPlayer() + " Wins!", Toast.LENGTH_LONG).show();
                 disableBoard();
+                showNewGameDialog(game.getCurrentPlayer() + " Wins!");
                 return;
             }
 
             if (game.isBoardFull()) {
-                Toast.makeText(this, "CAT Game!", Toast.LENGTH_LONG).show();
+                showNewGameDialog("It's a tie!");
                 return;
             }
 
@@ -74,12 +74,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetBoardUI() {
-        game.reset();
-        for (Button b : buttons) {
+        new AlertDialog.Builder(this)
+                .setTitle("Choose your symbol")
+                .setMessage("Do you want to be X or O?")
+                .setPositiveButton("X", (dialog, which) -> {
+                    game.reset();
+                    game.setCurrentPlayer('X');
+                    updateBoardUI();
+                })
+                .setNegativeButton("O", (dialog, which) -> {
+                    game.reset();
+                    game.setCurrentPlayer('O');
+                    updateBoardUI();
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    private void updateBoardUI() {
+
+        for (Button b : bttons) {
             b.setText("");
             b.setEnabled(true);
         }
-        turnTextView.setText("X's Turn");
+        turnTextView.setText(game.getCurrentPlayer() + "'s Turn");
+    }
+
+    private void showNewGameDialog(String message) {
+        new AlertDialog.Builder(this)
+            .setTitle("Game Over")
+            .setMessage(message + "\nStart a new game?")
+            .setPositionButton("Yes", (dialog, which) -> resetBoardUI())
+            .setNegativeButton("No", null)
+            .show();
     }
 
     // Menu
